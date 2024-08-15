@@ -1,0 +1,12 @@
+{
+  "HomePage": {
+    "pageTitle": "Next TS Starter",
+    "cardTitle": "Create project",
+    "cardDescription": " Deploy your new project in one-click.",
+    "name": "name",
+    "companyName": "Reza food",
+    "companyAdresse": "karl-koltz-str 15",
+    "telefon": "+4915902285576",
+    "categories": ["Pizza", "Burgers", "Sushi", "Pasta", "Salads", "Desserts"]
+  }
+}
