@@ -1,0 +1,12 @@
+{
+  "HomePage": {
+    "pageTitle": "Next TS مشغل ",
+    "cardTitle": "إنشاء مشروع",
+    "cardDescription": " انشر مشروعك الجديد بنقرة واحدة.",
+    "name": "الاسم",
+    "companyName": " رزقا",
+    "companyAdresse": "شارع ٨ اذار",
+    "telefon": "4915902285576+ ",
+    "categories": ["بيتزا", "رجر", "برجر", "سوشي", "باستا", "سلطات", "حلويات"]
+  }
+}
