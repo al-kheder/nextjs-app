@@ -2,15 +2,32 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Slider from '@/components/Slider';
 import OrderCard from '@/components/OrderCard';
+import MenuList from '@/components/MenuList';
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default async function Home({
+  searchParams: { categoryId },
+}: {
+  searchParams: { categoryId: string };
+}) {
+  const staticData = await fetch('http://localhost:3000/api/categories', {
+    cache: 'force-cache',
+  });
+  const response = await staticData.json();
+
+  const menuReq = await fetch('http://localhost:3000/api/items', {
+    cache: 'force-cache',
+  });
+  const menu = await menuReq.json();
+
   return (
     <section className=" px-40 py-20 w-full flex flex-col justify-center">
       <div className="flex flex-col  justify-center   w-full ">
         <Header />
         <div>
-          <Slider />
-          <OrderCard />
+          <Slider categories={response.data} />
+          <MenuList menu={menu.data} categoryId={categoryId} />
+          {/*        <MenuList /> */}
         </div>
         <Footer />
       </div>

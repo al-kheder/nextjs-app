@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { Button } from './ui/button';
 import { Plus, Minus } from 'lucide-react';
 import { useState } from 'react';
-export default function OrderCard() {
+export default function OrderCard({item}) {
   const [quantity, setQuantity] = useState<number>(0);
 
   const handleIncrement = () => {
@@ -31,7 +31,7 @@ export default function OrderCard() {
           </Button>
         </div>
         <div className="left">
-          <h1>Burgers</h1>
+          <h1>{item.name}</h1>
           <p>5,34 $</p>
         </div>
       </div>
