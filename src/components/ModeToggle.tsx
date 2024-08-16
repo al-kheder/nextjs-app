@@ -4,7 +4,6 @@ import * as React from 'react';
 import { MoonIcon, SunIcon } from '@radix-ui/react-icons';
 import { useTheme } from 'next-themes';
 
-
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -27,7 +26,10 @@ export function ModeToggle() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {themes.map((themeName) => (
-          <DropdownMenuItem key={themeName} onClick={() => setTheme(themeName)}>
+          <DropdownMenuItem
+            key={`app-${themeName}`}
+            onClick={() => setTheme(themeName)}
+          >
             {themeName}
           </DropdownMenuItem>
         ))}
