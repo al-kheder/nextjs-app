@@ -20,11 +20,11 @@ export default function Slider({ categories }: { categories: any[] }) {
         align: 'center',
         loop: true,
       }}
-      className="w-full max-w-sm"
+      className="w-full max-w-sm p-5 "
     >
-      <CarouselContent>
+      <CarouselContent className="p-10">
         {categories?.map((item, index) => (
-          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem key={index} className="">
             <div className="p-1">
               <Card onClick={() => handleProductClick(item.id)}>
                 <CardContent className="flex aspect-square items-center justify-center p-6 cursor-pointer">
