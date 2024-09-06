@@ -22,20 +22,22 @@ export default function Slider({ categories }: { categories: any[] }) {
       }}
       className="w-full max-w-sm p-5 "
     >
-      <CarouselContent className="p-10">
-        {categories?.map((item, index) => (
-          <CarouselItem key={index} className="">
-            <div className="p-1">
-              <Card onClick={() => handleProductClick(item.id)}>
-                <CardContent className="flex aspect-square items-center justify-center p-6 cursor-pointer">
-                  <span className="text-xl font-semibold">{item.name}</span>
-                </CardContent>
-              </Card>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
       <CarouselPrevious />
+      <CarouselContent className="p-10">
+        {categories &&
+          categories.length > 0 &&
+          categories.map((item, index) => (
+            <CarouselItem key={index}>
+              <div className="p-1">
+                <Card onClick={() => handleProductClick(item.id)}>
+                  <CardContent className="flex aspect-square items-center justify-center p-6 cursor-pointer">
+                    <span className="text-xl font-semibold">{item.name}</span>
+                  </CardContent>
+                </Card>
+              </div>
+            </CarouselItem>
+          ))}
+      </CarouselContent>
       <CarouselNext />
     </Carousel>
   );

@@ -1,5 +1,7 @@
+'use client';
+import { useStore } from 'zustand';
 import OrderCard from './OrderCard';
-
+import { useAppStore } from '@/app/store';
 interface MenuItem {
   id: string;
   name: string;
@@ -12,14 +14,16 @@ interface MenuListProps {
 }
 
 export default function MenuList({ menu, categoryId }: MenuListProps) {
+  const { addOrdr, orders } = useAppStore();
+  
   const menuList = menu.filter((item) => {
     return categoryId && item.categoryId === +categoryId;
   });
-  console.log(menuList);
+
   return (
     <div>
       {menuList.map((item, index) => (
-        <OrderCard key={index} item={item} />
+        <OrderCard key={index} item={item} onAddItem={addOrdr} />
       ))}
     </div>
   );

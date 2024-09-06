@@ -4,6 +4,9 @@ import Slider from '@/components/Slider';
 import OrderCard from '@/components/OrderCard';
 import MenuList from '@/components/MenuList';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useAppStore } from '../store';
+import ShowmyOrderButton from '@/components/ShowmyOrderButton';
 
 export default async function Home({
   searchParams: { categoryId },
@@ -20,15 +23,20 @@ export default async function Home({
   });
   const menu = await menuReq.json();
 
+  const cats = response.data.filter(({ id }) =>
+    menu.data.some(({ categoryId }) => categoryId === id)
+  );
+
   return (
-    <section className=" px-40 py-20 w-full flex flex-col justify-center">
-      <div className="flex flex-col  justify-center   w-full ">
+    <section className="px-40 py-20 w-full flex flex-col justify-center">
+      <div className="flex flex-col justify-center w-full">
         <Header />
         <div>
-          <Slider categories={response.data} />
+          <Slider categories={cats} />
           <MenuList menu={menu.data} categoryId={categoryId} />
-          {/*        <MenuList /> */}
+          {/* <MenuList /> */}
         </div>
+        <ShowmyOrderButton />
         <Footer />
       </div>
     </section>

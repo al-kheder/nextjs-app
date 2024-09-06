@@ -1,10 +1,11 @@
-import  OrderSummary  from '@/components/OrderSummary';
+import ProductCard from '@/components/OrderSummary';
+import OrderSummary from '@/components/OrderSummary';
 import React from 'react';
 
 function page() {
   return (
     <main>
-      <OrderSummary />
+      <ProductCard />
     </main>
   );
 }
