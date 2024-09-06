@@ -1,27 +1,55 @@
-// components/FoodCard.jsx
 'use client';
+import { useToast } from '@/components/ui/use-toast';
+import { Toaster } from '@/components/ui/toaster';
 import Image from 'next/image';
 import { Button } from './ui/button';
-import { Plus, Minus } from 'lucide-react';
-import { useState } from 'react';
-export default function OrderCard({item}) {
+import { Plus, Minus, PlusIcon } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import OrderOption from '@/components/OderOption';
+import IncrementDecrementOder from './IncrementDecrementOder';
+import { menu } from '@/app/api/items/mockData';
+
+export default function OrderCard({
+  item,
+  onAddItem,
+}: {
+  item: any;
+  onAddItem: (item: any) => void;
+}) {
+  const router = useRouter();
   const [quantity, setQuantity] = useState<number>(0);
+  const [showOrderBar, setShowOrderBar] = useState<boolean>(false);
+  const [showOrderOption, setShowOrderOption] = useState<boolean>(false);
 
-  const handleIncrement = () => {
-    setQuantity((prevQuantity) => prevQuantity + 1);
+  const [orders, setOrders] = useState<any[]>(() => {
+    const storedOrders = localStorage.getItem('orders');
+    return storedOrders ? JSON.parse(storedOrders) : [];
+  });
+
+  const handleViewOrder = () => {
+    const newOrder = {
+      name: item.name,
+      quantity: quantity,
+      totalPrice: item.defaultPrice * quantity,
+    };
+
+    const updatedOrders = [...orders, newOrder];
+    setOrders(updatedOrders);
+    router.push('/ordersummery');
   };
 
-  const handleDecrement = () => {
-    setQuantity((prevQuantity) => Math.max(prevQuantity - 1, 0));
-  };
   return (
     <div className="flex justify-center flex-col">
       <div className="p-2 flex justify-center">
-        <img src="/assets/OIP.jpeg" alt="Burgers" />
+        <img
+          src={`${menu.meta.rootImgPath}/${item.image}`}
+          alt="Burgers"
+        />
       </div>
       <hr />
-      <div className="p-2 flex justify-between">
-        <div className=" p-2 flex justify-around items-center gap-2 ">
+      <div className="p-2 flex justify-center cursor-pointer ">
+        {/*         <div className="p-2 flex justify-around items-center gap-2">
           <Button variant="outline" size="icon" onClick={handleIncrement}>
             <Plus />
           </Button>
@@ -29,10 +57,13 @@ export default function OrderCard({item}) {
           <Button variant="outline" size="icon" onClick={handleDecrement}>
             <Minus />
           </Button>
-        </div>
+        </div> */}
         <div className="left">
           <h1>{item.name}</h1>
-          <p>5,34 $</p>
+          <p>Price: ${item.defaultPrice}</p>
+          <p>Total Price: ${item.defaultPrice * quantity}</p>
+          <button onClick={() => onAddItem(item)}>addd</button>
+          <IncrementDecrementOder productId={item.id} />
         </div>
       </div>
     </div>
