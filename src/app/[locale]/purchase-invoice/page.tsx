@@ -1,54 +1,31 @@
-'use client';
+import Invoce from './Invoice';
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+export interface Item {
+  id: string;
+  name: string;
+  nameAr: string;
+}
 
-import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+export default async function PurchaseInvoce() {
+  const menuReq = await fetch('http://localhost:3000/api/items', {
+    cache: 'force-cache',
+  });
 
-const formSchema = z.object({
-  username: z.string().min(2, {
-    message: 'Username must be at least 2 characters.',
-  }),
-});
+  const menu = await menuReq.json();
 
-export default function ProfileForm() {
-  // ...
-  const form = useForm({});
-
-  function onSubmit() {
-    console.log(form.getValues());
-  }
+  const itemList = menu.data
+    .filter((item: any) => !item.isGroupedItem)
+    .map((item: any) => {
+      return {
+        id: item.id,
+        name: item.name,
+        nameAr: item.nameAr,
+      };
+    });
+  console.log(itemList);
   return (
     <div className="p-5 flex justify-start">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Invoice Number</FormLabel>
-                <FormControl>
-                  <Input placeholder="invoice number.." {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="submit">Submit</Button>
-        </form>
-      </Form>
+      <Invoce itemList={itemList}/>
     </div>
   );
 }

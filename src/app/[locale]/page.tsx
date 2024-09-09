@@ -1,11 +1,7 @@
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Slider from '@/components/Slider';
-import OrderCard from '@/components/OrderCard';
 import MenuList from '@/components/MenuList';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAppStore } from '../store';
 import ShowmyOrderButton from '@/components/ShowmyOrderButton';
 
 export default async function Home({
