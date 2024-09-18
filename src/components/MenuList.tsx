@@ -13,12 +13,12 @@ interface MenuListProps {
   categoryId?: string;
 }
 
-export default function MenuList({ menu, categoryId }: MenuListProps) {
+export default function MenuList({ menu, categoryId }:any) {
   const { addOrdr, orders } = useAppStore();
   
-  const menuList = menu.filter((item) => {
-    return categoryId && item.categoryId === +categoryId;
-  });
+  const menuList = menu?.filter((item) => {
+    return categoryId && item.categoryId === categoryId;
+  })??[];
 
   return (
     <div>

@@ -9,19 +9,13 @@ export default async function Home({
 }: {
   searchParams: { categoryId: string };
 }) {
-  const staticData = await fetch('http://localhost:3000/api/categories', {
-    cache: 'force-cache',
-  });
+  const staticData = await fetch('http://localhost:3000/api/categories');
   const response = await staticData.json();
 
-  const menuReq = await fetch('http://localhost:3000/api/items', {
-    cache: 'force-cache',
-  });
+  const menuReq = await fetch('http://localhost:3000/api/items');
   const menu = await menuReq.json();
 
-  const cats = response.data.filter(({ id }) =>
-    menu.data.some(({ categoryId }) => categoryId === id)
-  );
+  const cats = response
 
   return (
     <section className="px-40 py-20 w-full flex flex-col justify-center">
