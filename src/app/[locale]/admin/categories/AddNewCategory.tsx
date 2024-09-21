@@ -37,7 +37,6 @@ function AddNewCategory({
 
       const result = await response.json();
       notify();
-      console.log('Category submitted:', result);
     } catch (error) {
       console.error('Error adding category:', error);
     }

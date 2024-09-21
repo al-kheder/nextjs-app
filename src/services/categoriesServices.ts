@@ -15,8 +15,8 @@ async function createCategory(data: any) {
     );
     return response;
   } catch (error) {
-    console.error('Error creating interpretation', error);
-    throw new Error('Error creating interpretation');
+    console.error('Error creating category', error);
+    throw new Error('Error creating category');
   }
 }
 
@@ -29,8 +29,8 @@ async function fetchCategories() {
 
     return response.documents;
   } catch (error) {
-    console.error('Error creating interpretation', error);
-    throw new Error('Failed to fetch interpretation');
+    console.error('Error creating category', error);
+    throw new Error('Failed to fetch category');
   }
 }
 
@@ -85,8 +85,8 @@ async function deleteCategory(id: string) {
 //update data
 export async function PUT(req: Request) {
   try {
-    const { id, term, interpretation } = await req.json();
-    const data = { term, interpretation };
+    const { id, term, category } = await req.json();
+    const data = { term, category };
     await database.updateDocument('digitalmenu', 'categories', id, data);
     return NextResponse.json({
       message: 'Category updated successfully',

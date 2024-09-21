@@ -1,17 +1,23 @@
-import { appWriteClient } from '@/app/api/Appwrite_client';
+import { appWriteClient, storage } from '@/app/api/Appwrite_client';
 import { Databases, ID, Query } from 'appwrite';
 import { NextResponse } from 'next/server';
 
 const database = new Databases(appWriteClient);
 
 async function createItem(data: any) {
+  console.log(JSON.parse(data));
+  const { file, ...rest } = JSON.parse(data);
   try {
     const response = await database.createDocument(
       'digitalmenu',
       '66e862b000335c7e299d',
       ID.unique(),
-      data
+      rest
     );
+
+    console.log(data.file);
+    const promise = await storage.createFile('itemBucket', ID.unique(), file);
+    console.log(promise);
     return response;
   } catch (error) {
     console.error('Error creating items', error);

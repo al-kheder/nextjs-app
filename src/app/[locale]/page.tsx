@@ -9,21 +9,22 @@ export default async function Home({
 }: {
   searchParams: { categoryId: string };
 }) {
-  const staticData = await fetch('http://localhost:3000/api/categories');
-  const response = await staticData.json();
+  const response = await fetch('http://localhost:3000/api/categories');
+  const categories = await response.json();
 
   const menuReq = await fetch('http://localhost:3000/api/items');
   const menu = await menuReq.json();
 
-  const cats = response
+  console.log('menu::', menu);
+  //const cats = categories;
 
   return (
     <section className="px-40 py-20 w-full flex flex-col justify-center">
       <div className="flex flex-col justify-center w-full">
         <Header />
         <div>
-          <Slider categories={cats} />
-          <MenuList menu={menu.data} categoryId={categoryId} />
+          <Slider categories={categories} />
+          <MenuList menu={menu} category={categories} />
           {/* <MenuList /> */}
         </div>
         <ShowmyOrderButton />

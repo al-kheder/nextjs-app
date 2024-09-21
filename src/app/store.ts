@@ -19,7 +19,6 @@ const useAppStore = create<State>((set) => ({
     set((state) => ({ orders: [...state.orders, { ...order, quantity: 1 }] })),
   incrementProduct: (productId) =>
     set((state) => {
-      console.log('product id', productId);
       const updatedOrders = state.orders.map((order) => {
         if (order.id === productId) {
           return {

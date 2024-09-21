@@ -9,6 +9,8 @@ import { useRouter } from 'next/navigation';
 import OrderOption from '@/components/OderOption';
 import IncrementDecrementOder from './IncrementDecrementOder';
 import { menu } from '@/app/api/items/mockData';
+import { useAppStore } from '@/app/store';
+import { useSearchParams } from 'next/navigation';
 
 export default function OrderCard({
   item,
@@ -18,16 +20,20 @@ export default function OrderCard({
   onAddItem: (item: any) => void;
 }) {
   const router = useRouter();
-  const [quantity, setQuantity] = useState<number>(0);
+ // const [quantity, setQuantity] = useState<number>(0);
   const [showOrderBar, setShowOrderBar] = useState<boolean>(false);
   const [showOrderOption, setShowOrderOption] = useState<boolean>(false);
 
-  const [orders, setOrders] = useState<any[]>(() => {
+  const quantity = useAppStore(
+    (state) => state.orders.find((order) => order.id === item.id)?.quantity || 0
+  );
+
+  /*   const [orders, setOrders] = useState<any[]>(() => {
     const storedOrders = localStorage.getItem('orders');
     return storedOrders ? JSON.parse(storedOrders) : [];
   });
-
-  const handleViewOrder = () => {
+ */
+  /*   const handleViewOrder = () => {
     const newOrder = {
       name: item.name,
       quantity: quantity,
@@ -37,15 +43,12 @@ export default function OrderCard({
     const updatedOrders = [...orders, newOrder];
     setOrders(updatedOrders);
     router.push('/ordersummery');
-  };
+  }; */
 
   return (
     <div className="flex justify-center flex-col">
       <div className="p-2 flex justify-center">
-        <img
-          src={`${menu.meta.rootImgPath}/${item.image}`}
-          alt="Burgers"
-        />
+        {/*      <img src={`${menu.meta.rootImgPath}/${item.image}`} alt="Burgers" /> */}
       </div>
       <hr />
       <div className="p-2 flex justify-center cursor-pointer ">
@@ -60,10 +63,10 @@ export default function OrderCard({
         </div> */}
         <div className="left">
           <h1>{item.name}</h1>
-          <p>Price: ${item.defaultPrice}</p>
-          <p>Total Price: ${item.defaultPrice * quantity}</p>
+          <p>Price: ${item.price}</p>
+          <p>Total Price: ${item.price * quantity}</p>
           <button onClick={() => onAddItem(item)}>addd</button>
-          <IncrementDecrementOder productId={item.id} />
+          <IncrementDecrementOder productId={item.id} price={item.price} />
         </div>
       </div>
     </div>

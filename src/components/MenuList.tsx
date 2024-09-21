@@ -2,6 +2,9 @@
 import { useStore } from 'zustand';
 import OrderCard from './OrderCard';
 import { useAppStore } from '@/app/store';
+
+import { useSearchParams } from 'next/navigation';
+
 interface MenuItem {
   id: string;
   name: string;
@@ -13,16 +16,24 @@ interface MenuListProps {
   categoryId?: string;
 }
 
-export default function MenuList({ menu, categoryId }:any) {
+export default function MenuList({ menu, category }: any) {
   const { addOrdr, orders } = useAppStore();
-  
-  const menuList = menu?.filter((item) => {
-    return categoryId && item.categoryId === categoryId;
-  })??[];
 
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get('categoryId');
+  console.log('categoryId:', categoryId);
+
+  const filteredMenu = menu.filter(
+    (item: any) => categoryId === item.categoryId
+  );
+
+  if (filteredMenu.length === 0) {
+    return <div>No items found for the selected category.</div>;
+  }
+  console.log('filteredMenu:', filteredMenu);
   return (
     <div>
-      {menuList.map((item, index) => (
+      {filteredMenu.map((item: any, index) => (
         <OrderCard key={index} item={item} onAddItem={addOrdr} />
       ))}
     </div>

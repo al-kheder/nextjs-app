@@ -13,6 +13,7 @@ export default function Slider({ categories }: { categories: any[] }) {
   const router = useRouter();
   const handleProductClick = (productId: string) => {
     router.push(`/?categoryId=${productId}`);
+    console.log(categories);
   };
   return (
     <Carousel
@@ -29,7 +30,7 @@ export default function Slider({ categories }: { categories: any[] }) {
           categories.map((item, index) => (
             <CarouselItem key={index}>
               <div className="p-1">
-                <Card onClick={() => handleProductClick(item.id)}>
+                <Card onClick={() => handleProductClick(item.$id)}>
                   <CardContent className="flex aspect-square items-center justify-center p-6 cursor-pointer">
                     <span className="text-xl font-semibold">{item.name}</span>
                   </CardContent>

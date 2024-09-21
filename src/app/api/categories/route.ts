@@ -1,16 +1,20 @@
 import { categories } from '@/app/api/categories/mockData';
-import { createCategory, deleteCategory, fetchCategories } from '@/services/categoriesServices';
+import {
+  createCategory,
+  deleteCategory,
+  fetchCategories,
+} from '@/services/categoriesServices';
 import { NextResponse } from 'next/dist/server/web/spec-extension/response';
 
 // get data
 export async function GET() {
   try {
-    const interpretation = await fetchCategories();
+    const categories = await fetchCategories();
 
-    return NextResponse.json(interpretation);
+    return NextResponse.json(categories);
   } catch (error) {
     return NextResponse.json(
-      { message: 'Failed to fetch interpretation' },
+      { message: 'Failed to fetch categories' },
       { status: 500 }
     );
   }
@@ -25,7 +29,7 @@ export async function POST(req: Request) {
     });
   } catch (error) {
     return NextResponse.json(
-      { message: 'Failed to create interpretation' },
+      { message: 'Failed to create category' },
       { status: 500 }
     );
   }
@@ -50,6 +54,3 @@ export async function DELETE(
   }
 }
  */
-
-
-

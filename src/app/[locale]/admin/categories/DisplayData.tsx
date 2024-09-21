@@ -4,7 +4,7 @@ import AddNewCategory from './AddNewCategory';
 import { set } from 'zod';
 import Link from 'next/link';
 
-function DisplayData({ dataToDisplay }: any) {
+function DisplayData() {
   const [close, setClose] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const [show, setShow] = useState(false);
@@ -15,6 +15,7 @@ function DisplayData({ dataToDisplay }: any) {
       setIsLoaded(true);
       const response = await fetch('http://localhost:3000/api/categories');
       const data = await response.json();
+      console.log('data from useEffect', data);
       setData(data);
     };
     getCategories();
@@ -51,50 +52,49 @@ function DisplayData({ dataToDisplay }: any) {
           Add New Category
         </button>
       </div>
-      {show && (
-        <div className="text-gray-900 bg-gray-200 mt-1">
-          <div className="p-4 flex justify-between">
-            <h1 className="text-3xl">Category</h1>
-            <button
-              className="p-4 bg-green-500 text-white font-extrabold text-xl rounded-full w-14 cursor-pointer"
-              onClick={onClose}
-            >
-              +
-            </button>
-          </div>
-          <div className="px-3 py-4 flex justify-center">
-            <table className="w-full text-md bg-white shadow-md rounded mb-4">
-              <tbody>
-                <tr className="border-b">
-                  <th className="text-left p-3 px-5">Name</th>
-                  <th className="text-left p-3 px-5">NameAr</th>
-                  <th className="text-left p-3 px-5">Sequence</th>
-                  <th></th>
-                </tr>
-                {data.map((category) => (
-                  <tr
-                    key={category.id}
-                    className={`border-b hover:bg-orange-100 'bg-gray-100' : ''}`}
-                  >
-                    <td className="p-3 px-5">{category.name}</td>
-                    <td className="p-3 px-5">{category.nameAr}</td>
-                    <td className="p-3 px-5">{category.sequence}</td>
-                    <td className="p-3 px-5 flex justify-end">
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteCategory(category.$id)}
-                        className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+
+      <div className="text-gray-900 bg-gray-200 mt-1">
+        <div className="p-4 flex justify-between">
+          <h1 className="text-3xl">Category</h1>
+          <button
+            className="p-4 bg-green-500 text-white font-extrabold text-xl rounded-full w-14 cursor-pointer"
+            onClick={onClose}
+          >
+            +
+          </button>
         </div>
-      )}
+        <div className="px-3 py-4 flex justify-center">
+          <table className="w-full text-md bg-white shadow-md rounded mb-4">
+            <tbody>
+              <tr className="border-b">
+                <th className="text-left p-3 px-5">Name</th>
+                <th className="text-left p-3 px-5">NameAr</th>
+                <th className="text-left p-3 px-5">Sequence</th>
+                <th></th>
+              </tr>
+              {data.map((category) => (
+                <tr
+                  key={category.id}
+                  className={`border-b hover:bg-orange-100 'bg-gray-100' : ''}`}
+                >
+                  <td className="p-3 px-5">{category.name}</td>
+                  <td className="p-3 px-5">{category.nameAr}</td>
+                  <td className="p-3 px-5">{category.sequence}</td>
+                  <td className="p-3 px-5 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCategory(category.$id)}
+                      className="text-sm bg-red-500 hover:bg-red-700 text-white py-1 px-2 rounded focus:outline-none focus:shadow-outline"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <AddNewCategory onClose={onClose} close={close} />
     </main>

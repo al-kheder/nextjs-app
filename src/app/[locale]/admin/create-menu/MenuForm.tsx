@@ -6,26 +6,37 @@ import React from 'react';
 function MenuForm({ category }: { category: any }) {
   const [englishCategory, setEnglishCategory] = useState('');
   const [arabicCategory, setArabicCategory] = useState('');
-  const [categoryId, setCategoryId] = useState('');
+  const [price, setPrice] = useState(0);
+  const [categoryId, setCategoryId] = useState(category[0].$id);
   const [close, setClose] = useState(true);
+  const [file, setFile] = useState('');
 
   const router = useRouter();
 
-  const currentPath = window.location.pathname;
-  const newQuery = '?isActive=false';
   const handleClose = () => {
+    const newQuery = '?isActive=false';
+    const currentPath = window.location.pathname;
     router.replace(`${currentPath}${newQuery}`);
     setClose(false);
   };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-
     const newCategory = {
       name: englishCategory,
       nameAr: arabicCategory,
       categoryId,
+      price,
+      file,
     };
+
+    const formData = new FormData();
+    formData.append('name', englishCategory);
+
+    formData.append('nameAr', arabicCategory);
+    formData.append('categoryId', categoryId);
+    formData.append('price', price.toString());
+    formData.append('file', file);
 
     try {
       const response = await fetch('/api/items', {
@@ -34,7 +45,7 @@ function MenuForm({ category }: { category: any }) {
           'Content-Type': 'application/json',
         },
 
-        body: JSON.stringify(newCategory),
+        body: formData,
       });
     } catch (error) {
       console.error('Error adding category:', error);
@@ -46,7 +57,7 @@ function MenuForm({ category }: { category: any }) {
       {close && (
         <div className="min-w-40 px-8 absolute top-10 left-50 bg-slate-100 z-10 rounded-md">
           <div className="flex justify-center py-4  px-0 gap-20">
-            <h2>Add New Category</h2>
+            <h2>Add New Item</h2>
             <button onClick={handleClose}>Close</button>
           </div>
           <hr />
@@ -71,17 +82,41 @@ function MenuForm({ category }: { category: any }) {
                 onChange={(e) => setArabicCategory(e.target.value)}
               />
             </div>
+            <div className="flex flex-col">
+              <label>Price</label>
+              <input
+                className="border-2 rounded-md border-gray-400 p-2 mt-1"
+                type="number"
+                placeholder="Price"
+                value={price}
+                onChange={(e) => setPrice(parseFloat(e.target.value))}
+              />
+            </div>
 
             <div className="flex flex-col">
               <label>Category</label>
               <select
                 className="border-2 rounded-md border-gray-400 p-2 mt-1"
+                value={categoryId}
                 onChange={(e) => setCategoryId(e.target.value)}
               >
                 {category.map((item: any) => (
-                  <option key={item.id} value={item.$id}>{item.name}</option>
+                  <option key={item.id} value={item.$id}>
+                    {item.name}
+                  </option>
                 ))}
               </select>
+            </div>
+
+            <div className="flex flex-col">
+              <label>File Uploader</label>
+              <input
+                type="file"
+                id="avatar"
+                name="avatar"
+                accept="image/png, image/jpeg"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
             </div>
 
             <div className="flex flex-col"></div>
