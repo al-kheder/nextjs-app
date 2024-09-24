@@ -2,8 +2,14 @@ import { createItem, fetchItems } from '@/services/itemsService';
 import { NextResponse } from 'next/dist/server/web/spec-extension/response';
 import { Formidable } from 'formidable';
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 // get data
+
 export async function GET() {
   try {
     const items = await fetchItems();
@@ -19,22 +25,20 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const formData = await req.body
- 
+    const formData = await req.formData();
+    const name = formData.get('name');
+    const nameAr = formData.get('nameAr');
+    const file = formData.get('file');
+    const fields = { name, nameAr, file };
 
-    console.log(formData);
+    console.log('fields route', fields);
 
-    //return the data back or just do whatever you want with it
-
-    /*     const responce = await createItem({ ...fields, file: files.file })
-     */ return NextResponse.json({
-      message: 'Items created successfully',
+    const responce = await createItem(fields);
+    return NextResponse.json({
+      formData,
     });
   } catch (error) {
     console.log('error', error);
-    return NextResponse.json(
-      { message: 'Failed to create Items' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error });
   }
 }

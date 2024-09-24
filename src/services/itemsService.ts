@@ -5,8 +5,7 @@ import { NextResponse } from 'next/server';
 const database = new Databases(appWriteClient);
 
 async function createItem(data: any) {
-  console.log(JSON.parse(data));
-  const { file, ...rest } = JSON.parse(data);
+  const { file, ...rest } = data;
   try {
     const response = await database.createDocument(
       'digitalmenu',
@@ -15,7 +14,7 @@ async function createItem(data: any) {
       rest
     );
 
-    console.log(data.file);
+    console.log('datafile from the services: ', data.file);
     const promise = await storage.createFile('itemBucket', ID.unique(), file);
     console.log(promise);
     return response;
