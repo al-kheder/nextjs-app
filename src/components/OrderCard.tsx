@@ -11,16 +11,18 @@ import IncrementDecrementOder from './IncrementDecrementOder';
 import { menu } from '@/app/api/items/mockData';
 import { useAppStore } from '@/app/store';
 import { useSearchParams } from 'next/navigation';
+import { getImageUrl } from '@/services/itemsService';
 
 export default function OrderCard({
   item,
+
   onAddItem,
 }: {
   item: any;
   onAddItem: (item: any) => void;
 }) {
   const router = useRouter();
- // const [quantity, setQuantity] = useState<number>(0);
+  // const [quantity, setQuantity] = useState<number>(0);
   const [showOrderBar, setShowOrderBar] = useState<boolean>(false);
   const [showOrderOption, setShowOrderOption] = useState<boolean>(false);
 
@@ -48,7 +50,7 @@ export default function OrderCard({
   return (
     <div className="flex justify-center flex-col">
       <div className="p-2 flex justify-center">
-        {/*      <img src={`${menu.meta.rootImgPath}/${item.image}`} alt="Burgers" /> */}
+        {<img src={getImageUrl(item.imageId)} alt="" />}
       </div>
       <hr />
       <div className="p-2 flex justify-center cursor-pointer ">

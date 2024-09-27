@@ -4,6 +4,7 @@ import OrderCard from './OrderCard';
 import { useAppStore } from '@/app/store';
 
 import { useSearchParams } from 'next/navigation';
+import { getImageUrl } from '@/services/itemsService';
 
 interface MenuItem {
   id: string;
@@ -21,7 +22,6 @@ export default function MenuList({ menu, category }: any) {
 
   const searchParams = useSearchParams();
   const categoryId = searchParams.get('categoryId');
-  console.log('categoryId:', categoryId);
 
   const filteredMenu = menu.filter(
     (item: any) => categoryId === item.categoryId
@@ -30,7 +30,7 @@ export default function MenuList({ menu, category }: any) {
   if (filteredMenu.length === 0) {
     return <div>No items found for the selected category.</div>;
   }
-  console.log('filteredMenu:', filteredMenu);
+
   return (
     <div>
       {filteredMenu.map((item: any, index) => (
@@ -39,3 +39,6 @@ export default function MenuList({ menu, category }: any) {
     </div>
   );
 }
+
+//https://cloud.appwrite.io/v1/storage/buckets/itemBucket/files/66f6aa5300255cf5e5fc/view?project=66e846e300175632102d
+//https://cloud.appwrite.io/v1/storage/buckets/itemBucket/files/66f6aa5300255cf5e5fc/view?project=66e846e300175632102d&project=66e846e300175632102d&mode=admin

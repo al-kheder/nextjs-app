@@ -1,6 +1,5 @@
 import { createItem, fetchItems } from '@/services/itemsService';
 import { NextResponse } from 'next/dist/server/web/spec-extension/response';
-import { Formidable } from 'formidable';
 
 export const config = {
   api: {
@@ -28,10 +27,11 @@ export async function POST(req: Request) {
     const formData = await req.formData();
     const name = formData.get('name');
     const nameAr = formData.get('nameAr');
+    const price = parseInt(formData.get('price'));
+    const categoryId = formData.get('categoryId');
+    const imageId = formData.get('imageId');
     const file = formData.get('file');
-    const fields = { name, nameAr, file };
-
-    console.log('fields route', fields);
+    const fields = { name, nameAr, price, categoryId,imageId, file };
 
     const responce = await createItem(fields);
     return NextResponse.json({

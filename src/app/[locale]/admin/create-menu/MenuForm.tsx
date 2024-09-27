@@ -3,6 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState, type FormEvent } from 'react';
 import React from 'react';
 import axios from 'axios';
+import { ID } from 'appwrite';
 
 function MenuForm({ category }: { category: any }) {
   const [englishCategory, setEnglishCategory] = useState('');
@@ -10,17 +11,19 @@ function MenuForm({ category }: { category: any }) {
   const [price, setPrice] = useState(0);
   const [categoryId, setCategoryId] = useState(category[0].$id);
   const [close, setClose] = useState(true);
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState(null);
+  const [imageId, setImageId] = useState('');
 
   const router = useRouter();
+  //create fieldId to pass it to the images
+  const fileId = ID.unique();
 
   const handleFileChange = (e: any) => {
-    if (e.target.files && e.target.files.length > 0) {
-      setFile(e.target.files[0]); // Access the first selected file
-    } else {
-      setFile(null); // Set file to null if no file selected
-    }
+    setImageId(fileId);
+    setFile(e.target.files?.[0]); // Access the first selected file
   };
+
+  console.log('image id from the client  : ', imageId);
 
   const handleClose = () => {
     const newQuery = '?isActive=false';
@@ -33,33 +36,20 @@ function MenuForm({ category }: { category: any }) {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (!file) {
-      console.error('No files selected');
-      return;
-    }
-    /*     const newCategory = {
-      name: englishCategory,
-      nameAr: arabicCategory,
-      categoryId,
-      price,
-      files,
-    }; */
-
     const formData = new FormData();
     formData.append('name', englishCategory);
     formData.append('nameAr', arabicCategory);
     formData.append('categoryId', categoryId);
-    formData.append('price', price.toString());
+    formData.append('price', price);
+    formData.append('categoryId', categoryId);
+    formData.append('imageId', imageId);
     formData.append('file', file);
-
     try {
-      // Make the POST request using Axios
       const response = await axios.post('/api/items', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      console.log('formdata client', formData);
       console.log('Server response:', response.data);
     } catch (error) {
       console.error('Error uploading files:', error);
@@ -74,7 +64,7 @@ function MenuForm({ category }: { category: any }) {
       return;
     }
 
-        const newCategory = {
+    const newCategory = {
       name: englishCategory,
       nameAr: arabicCategory,
       categoryId,
@@ -87,19 +77,19 @@ function MenuForm({ category }: { category: any }) {
     formData.append('nameAr', arabicCategory);
     formData.append('categoryId', categoryId);
     formData.append('price', price.toString());
-
-    for (let i = 0; i < files.length; i++) {
+    formData.append('file', files);
+    /* for (let i = 0; i < files.length; i++) {
       formData.append('files', files[i]);
-    }
+    } 
 
     try {
-      
       const response = await fetch('/api/items', {
         method: 'POST',
         body: formData,
-      });l
+      });
+
       if (response.ok) {
-        const responseData = await response.json(); 
+        const responseData = await response.json();
         console.log('Server response:', responseData);
       } else {
         console.error('Error uploading files:', response.statusText);
@@ -108,8 +98,7 @@ function MenuForm({ category }: { category: any }) {
       console.error('Error uploading files:', error);
     }
   };
-  */
-
+*/
   return (
     <main>
       {close && (

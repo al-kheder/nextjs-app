@@ -3,16 +3,20 @@ import { appWriteClient } from '@/app/api/Appwrite_client';
 import { Databases, ID, Query } from 'appwrite';
 import { NextResponse } from 'next/server';
 
-const database = new Databases(appWriteClient);
+//db
+import { db } from '../../databases/appwrite_database';
+
+//const database = new Databases(appWriteClient);
 
 async function createCategory(data: any) {
   try {
-    const response = await database.createDocument(
+    /*  const response = await database.createDocument(
       'digitalmenu',
       'categories',
       ID.unique(),
       data
-    );
+    ); */
+    const response = await db.category.create(data);
     return response;
   } catch (error) {
     console.error('Error creating category', error);
@@ -23,10 +27,10 @@ async function createCategory(data: any) {
 //fetch data
 async function fetchCategories() {
   try {
-    const response = await database.listDocuments('digitalmenu', 'categories', [
+    /*  const response = await database.listDocuments('digitalmenu', 'categories', [
       Query.orderDesc('$createdAt'),
-    ]);
-
+    ]); */
+    const response = await db.category.list();
     return response.documents;
   } catch (error) {
     console.error('Error creating category', error);
@@ -68,11 +72,12 @@ export async function GET() {
 
 async function deleteCategory(id: string) {
   try {
-    const response = await database.deleteDocument(
+    /* const response = await database.deleteDocument(
       'digitalmenu',
       'categories',
       id
-    );
+    ); */
+    const response = await db.category.delete(id);
     return NextResponse.json({
       message: 'Category deleted successfully',
     });

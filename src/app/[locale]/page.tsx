@@ -14,9 +14,9 @@ export default async function Home({
 
   const menuReq = await fetch('http://localhost:3000/api/items');
   const menu = await menuReq.json();
-
-  console.log('menu::', menu);
   //const cats = categories;
+
+   
 
   return (
     <section className="px-40 py-20 w-full flex flex-col justify-center">
