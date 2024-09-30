@@ -9,27 +9,22 @@ export default async function Home({
 }: {
   searchParams: { categoryId: string };
 }) {
-  const staticData = await fetch('http://localhost:3000/api/categories', {
-    cache: 'force-cache',
-  });
-  const response = await staticData.json();
+  const response = await fetch('http://localhost:3000/api/categories');
+  const categories = await response.json();
 
-  const menuReq = await fetch('http://localhost:3000/api/items', {
-    cache: 'force-cache',
-  });
+  const menuReq = await fetch('http://localhost:3000/api/items');
   const menu = await menuReq.json();
+  //const cats = categories;
 
-  const cats = response.data.filter(({ id }) =>
-    menu.data.some(({ categoryId }) => categoryId === id)
-  );
+   
 
   return (
     <section className="px-40 py-20 w-full flex flex-col justify-center">
       <div className="flex flex-col justify-center w-full">
         <Header />
         <div>
-          <Slider categories={cats} />
-          <MenuList menu={menu.data} categoryId={categoryId} />
+          <Slider categories={categories} />
+          <MenuList menu={menu} category={categories} />
           {/* <MenuList /> */}
         </div>
         <ShowmyOrderButton />

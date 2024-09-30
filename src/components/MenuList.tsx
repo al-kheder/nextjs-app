@@ -2,6 +2,10 @@
 import { useStore } from 'zustand';
 import OrderCard from './OrderCard';
 import { useAppStore } from '@/app/store';
+
+import { useSearchParams } from 'next/navigation';
+import { getImageUrl } from '@/services/itemsService';
+
 interface MenuItem {
   id: string;
   name: string;
@@ -13,18 +17,28 @@ interface MenuListProps {
   categoryId?: string;
 }
 
-export default function MenuList({ menu, categoryId }: MenuListProps) {
+export default function MenuList({ menu, category }: any) {
   const { addOrdr, orders } = useAppStore();
-  
-  const menuList = menu.filter((item) => {
-    return categoryId && item.categoryId === +categoryId;
-  });
+
+  const searchParams = useSearchParams();
+  const categoryId = searchParams.get('categoryId');
+
+  const filteredMenu = menu.filter(
+    (item: any) => categoryId === item.categoryId
+  );
+
+  if (filteredMenu.length === 0) {
+    return <div>No items found for the selected category.</div>;
+  }
 
   return (
     <div>
-      {menuList.map((item, index) => (
+      {filteredMenu.map((item: any, index) => (
         <OrderCard key={index} item={item} onAddItem={addOrdr} />
       ))}
     </div>
   );
 }
+
+//https://cloud.appwrite.io/v1/storage/buckets/itemBucket/files/66f6aa5300255cf5e5fc/view?project=66e846e300175632102d
+//https://cloud.appwrite.io/v1/storage/buckets/itemBucket/files/66f6aa5300255cf5e5fc/view?project=66e846e300175632102d&project=66e846e300175632102d&mode=admin
